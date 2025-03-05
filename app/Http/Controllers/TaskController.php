@@ -2,36 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::where('user_id', auth()->id())->orWhere('assigned_to', auth()->id())->get();
-        return response()->json($tasks);
+
+        $tasks = Task::where('user_id', auth()->id())
+            ->orWhere('assigned_to', auth()->id());
+
+
+        if ($request->has('status') && in_array($request->status, ['pending', 'in_progress', 'completed'])) {
+            $tasks = $tasks->where('status', $request->status);
+        }
+
+        if ($request->has('due_date')) {
+            $tasks = $tasks->whereDate('due_date', $request->due_date);
+        }
+
+        if ($request->has('search')) {
+            $tasks = $tasks->where(function ($q) use ($request) {
+                $q->where('title', 'like', "%" . $request->search . "%")
+                    ->orWhere('description', 'like', "%" . $request->search . "%");
+            });
+        }
+
+        $tasks = $tasks->paginate(15);
+
+        return view('tasks.index', compact('tasks'));
     }
 
     public function create()
     {
-        return view('tasks.create');
+        $users = User::all();
+        return view('tasks.create', compact('users'));
     }
 
     public function store(Request $request)
     {
-      $res =   $request->validate([
+        $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'due_date' => 'required|date',
             'status' => 'required|in:pending,in_progress,completed',
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
-        $res['user_is'] = auth()->id();
+        $task = Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'due_date' => $request->due_date,
+            'status' => $request->status,
+            'user_id' => auth()->id(),
+            'assigned_to' => $request->assigned_to,
+        ]);
 
-        Task::create([$res]);
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+//        if ($request->assigned_to) {
+//            $assignedUser = User::find($request->assigned_to);
+//            Mail::raw("You have been assigned a new task: {$task->title}",
+//                function ($message) use ($assignedUser) {
+//                    $message->to($assignedUser->email)->subject("New Task Assigned");
+//                });
+//        }
+        session()->flash('success', 'Task created successfully!');
+
+        return redirect()->route('tasks.index');
     }
 
     public function edit(Task $task)
@@ -67,34 +108,4 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
     }
-
-
-
-    public function  filter(Request $request)
-    {
-
-        $query = Task::where('user_id', auth()->id())->orWhere('assigned_to', auth()->id());
-
-
-        if ($request->has('status') && in_array($request->status, ['pending', 'in_progress', 'completed'])) {
-            $query->where('status', $request->status);
-        }
-
-
-        if ($request->has('due_date')) {
-            $query->whereDate('due_date', $request->due_date);
-        }
-
-        if ($request->has('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('title', 'like', "%" . $request->search . "%")
-                    ->orWhere('description', 'like', "%" . $request->search . "%");
-            });
-        }
-
-        $tasks = $query->paginate(15);
-
-        return response()->json($tasks);
-    }
 }
-
