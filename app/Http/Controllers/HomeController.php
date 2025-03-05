@@ -22,6 +22,11 @@ class HomeController extends Controller
             {
                 return view('Admin.adminhome');
             }
+            else
+
+            {
+                return redirect('/login');
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->is_admin == 1){
+        if(auth()->user()->usertype == 'admin'){
             return $next($request);
         } else {
             return redirect('/')->with('error','You are not authorized to access this page');
