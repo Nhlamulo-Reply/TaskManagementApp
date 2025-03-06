@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('content')
+
+<x-app-layout>
     <div class="container">
-        <h2>Create Task</h2>
+        <a href="{{ route('tasks.create') }}" class="btn btn-primary">Create Task</a>
         <form action="{{ route('tasks.store') }}" method="POST">
             @csrf
             <label>Title:</label>
@@ -23,4 +23,4 @@
             <button type="submit" class="btn btn-success mt-3">Create</button>
         </form>
     </div>
-@endsection
+    </x-app-layout>

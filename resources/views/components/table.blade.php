@@ -13,8 +13,14 @@
             <tbody>
             @forelse ($data as $row)
                 <tr class="border-b hover:bg-gray-50">
-                    @foreach ($row as $cell)
-                        <td class="px-4 py-3 border-b">{{ $cell }}</td>
+                    @foreach ($row as $key => $cell)
+                        <td class="px-4 py-3 border-b">
+                            @if ($key === 'actions')
+                                {!! $cell !!}
+                            @else
+                                {{ $cell }}
+                            @endif
+                        </td>
                     @endforeach
                 </tr>
             @empty

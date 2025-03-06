@@ -13,18 +13,19 @@ class TaskController extends Controller
     public function index(Request $request)
     {
 
-        $tasks = Task::where('user_id', auth()->id())
-            ->orWhere('assigned_to', auth()->id());
+        $tasks = Task::where('user_id', auth()->id())->orWhere('assigned_to', auth()->id());
 
 
         if ($request->has('status') && in_array($request->status, ['pending', 'in_progress', 'completed'])) {
             $tasks = $tasks->where('status', $request->status);
         }
 
+        // Apply due date filter
         if ($request->has('due_date')) {
             $tasks = $tasks->whereDate('due_date', $request->due_date);
         }
 
+        // Apply search filter
         if ($request->has('search')) {
             $tasks = $tasks->where(function ($q) use ($request) {
                 $q->where('title', 'like', "%" . $request->search . "%")
@@ -33,6 +34,12 @@ class TaskController extends Controller
         }
 
         $tasks = $tasks->paginate(15);
+
+        $tasks->appends([
+            'status' => $request->status,
+            'due_date' => $request->due_date,
+            'search' => $request->search,
+        ]);
 
         return view('tasks.index', compact('tasks'));
     }
