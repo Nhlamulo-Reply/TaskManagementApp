@@ -18,7 +18,7 @@
 
     </x-container>
     <x-container>
-        <!-- Success Alert -->
+
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -63,9 +63,9 @@
         <form method="GET" action="{{ route('tasks.index') }}" class="mb-6">
             @csrf
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <!-- Button Group (Left) -->
+
                 <div class="flex space-x-2 order-1 md:order-none">
-                    <!-- Filter Button -->
+
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                         Filter
                     </button>
@@ -76,13 +76,17 @@
                     </a>
                 </div>
 
-                <!-- Search Input (Right) -->
+
                 <div class="w-full md:w-auto order-2 md:order-none">
-                    <input type="text" name="search" placeholder="Search tasks..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ request('search') }}">
+                    <input type="text" name="search" placeholder="Search tasks..."
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           value="{{ request('search') }}" x-model="search">
+
                 </div>
             </div>
+            <input x-model="search" x-on:input="console.log(search)" ... >
 
-            <!-- Additional Filters (Status and Due Date) -->
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <!-- Status Dropdown -->
                 <div>
@@ -92,7 +96,9 @@
                         :selected="request('status')"
                         label="Status"
                         placeholder="Select status"
+                        x-model="status"
                     />
+
                 </div>
 
                 <!-- Due Date Input -->

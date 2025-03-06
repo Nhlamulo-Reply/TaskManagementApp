@@ -20,12 +20,10 @@ class TaskController extends Controller
             $tasks = $tasks->where('status', $request->status);
         }
 
-        // Apply due date filter
         if ($request->has('due_date')) {
             $tasks = $tasks->whereDate('due_date', $request->due_date);
         }
 
-        // Apply search filter
         if ($request->has('search')) {
             $tasks = $tasks->where(function ($q) use ($request) {
                 $q->where('title', 'like', "%" . $request->search . "%")
