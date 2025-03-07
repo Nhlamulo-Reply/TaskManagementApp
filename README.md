@@ -50,3 +50,42 @@ This system has two types of users:
 	•	Can create, edit, and delete their own tasks
 	•	Can view tasks assigned to them
 	•	Can filter and search their own tasks
+
+Method
+Route
+Description
+GET
+/register
+User Registration
+GET
+/login
+User Login
+POST
+/logout
+User Logout
+
+Method
+Route
+Description
+GET
+/tasks
+View all tasks
+GET
+/tasks/create
+Create new task form
+POST
+/tasks
+Store new task
+GET
+/tasks/{id}/edit
+Edit a task
+PUT
+/tasks/{id}
+Update task details
+DELETE
+/tasks/{id}
+Delete a task
+
+
+
+
