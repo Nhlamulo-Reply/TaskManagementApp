@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'usertype'
+        'usertype',  // Ensure the 'usertype' field exists for user roles (e.g., admin, user)
     ];
 
     /**
@@ -42,4 +42,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relationship: Tasks created by the user.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'user_id');
+    }
+
+    /**
+     * Relationship: Tasks assigned to the user.
+     */
+    public function assignedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    /**
+     * Check if the user is an admin.
+     */
+    public function isAdmin()
+    {
+        return $this->usertype === 'admin';
+    }
+
+    // User.php (App\Models\User)
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+
 }

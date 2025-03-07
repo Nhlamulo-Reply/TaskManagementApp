@@ -11,19 +11,18 @@ class Task extends Model
 {
     use HasFactory;
 
-    use HasFactory;
-
-    protected $fillable = ['title', 'description', 'due_date', 'status', 'user_id'];
+    protected $fillable = ['title', 'description', 'due_date', 'status', 'user_id', 'assigned_to']; // Add 'assigned_to' here
     protected $dates = ['due_date'];
 
+    // Relationship to the user who created the task
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function  assignee()
+    // Relationship to the user assigned to the task
+    public function assignee()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'assigned_to');
     }
-
 }
