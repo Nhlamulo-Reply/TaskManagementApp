@@ -17,8 +17,7 @@ It also includes role-based authentication to differentiate between Admins and U
 	6.	Available Routes
 	7.	Packages Used
 	8.	Testing
-	9.	Troubleshooting
-	10.	Contributing
+	
 
 ⸻
 
