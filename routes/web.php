@@ -44,9 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Task management (using resource routes for all CRUD actions)
+
     Route::resource('tasks', TaskController::class);
-    // Custom route for showing a specific task (if needed)
+
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 });
 

@@ -13,17 +13,25 @@ class TaskController extends Controller
 {
 
 
+//    public function listUsers()
+//    {
+//        // Ensure the user is an admin
+//        if (!auth()->user()->isAdmin()) {
+//            abort(403, 'Unauthorized action.');
+//        }
+//
+//        // Get all users
+//        $users = User::all();
+//
+//        // Return a view with the list of users
+//        return view('Admin.view-users', compact('users'));
+//    }
+
+
     public function listUsers()
     {
-        // Ensure the user is an admin
-        if (!auth()->user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        // Get all users
+        $this->authorize('viewUsers', User::class);
         $users = User::all();
-
-        // Return a view with the list of users
         return view('Admin.view-users', compact('users'));
     }
 
@@ -90,10 +98,10 @@ class TaskController extends Controller
         ]);
 
 
-        if ($request->assigned_to) {
-            $assignedUser = User::find($request->assigned_to);
-            Mail::to($assignedUser->email)->send(new TaskAssigned($task));
-        }
+//        if ($request->assigned_to) {
+//            $assignedUser = User::find($request->assigned_to);
+//            Mail::to($assignedUser->email)->send(new TaskAssigned($task));
+//        }
 
         session()->flash('success', 'Task created successfully!');
         return redirect()->route('tasks.index');

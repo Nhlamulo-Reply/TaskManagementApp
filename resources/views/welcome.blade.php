@@ -27,13 +27,13 @@
     </div>
 
     <script>
-        // Toggle Login Form
+
         document.getElementById('login-btn').addEventListener('click', function() {
             document.getElementById('login-form').classList.remove('hidden');
             document.getElementById('registration-form').classList.add('hidden');
         });
 
-        // Toggle Register Form
+
         document.getElementById('register-btn').addEventListener('click', function() {
             document.getElementById('registration-form').classList.remove('hidden');
             document.getElementById('login-form').classList.add('hidden');
