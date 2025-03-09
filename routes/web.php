@@ -53,7 +53,6 @@ Route::middleware('auth')->group(function () {
 // Users list for admins
 Route::get('/users', [TaskController::class, 'listUsers'])->middleware('auth');
 
-// Add task for admin (custom route)
-Route::get('/add-task', [HomeController::class, 'index'])->middleware(['auth','admin']);
+
 
 require __DIR__.'/auth.php';

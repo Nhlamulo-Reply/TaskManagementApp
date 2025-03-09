@@ -85,7 +85,7 @@
                 </div>
             </form>
 
-        </div> <!-- Closing div for x-data -->
+        </div>
 
         <x-table :headers="['Title', 'Description', 'Due Date', 'Status', 'Actions']"
                  :data="$tasks->map(function ($task) {
@@ -99,8 +99,6 @@
          })"
         />
 
-        <div class="mt-4">
-            {{ $tasks->links() }}
-        </div>
+
     </x-container>
 </x-app-layout>

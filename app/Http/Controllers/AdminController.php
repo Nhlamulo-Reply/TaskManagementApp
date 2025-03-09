@@ -10,7 +10,7 @@ class AdminController extends Controller
     public function viewUsers()
     {
 
-        $users = User::with('roles')->get();
+        $users = User::all();
 
         return view('Admin.view-users', compact('users'));
     }

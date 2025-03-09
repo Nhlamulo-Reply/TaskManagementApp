@@ -32,9 +32,9 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
-                                    @foreach($user->roles as $role)
-                                        {{ $role->name }}<br>
-                                    @endforeach
+{{--                                    @foreach($user->roles as $role)--}}
+{{--                                        {{ $role->name }}<br>--}}
+{{--                                    @endforeach--}}
 
                                 </td>
                                 <td>
