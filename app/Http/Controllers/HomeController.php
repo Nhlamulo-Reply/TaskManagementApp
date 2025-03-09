@@ -10,22 +10,26 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $user= (Auth::Check());
+      if (Auth::Check());
+      {
+          $user = Auth::user();
+          $usertype = $user->usertype;
 
-            $usertype = $user->usertype;
+          if($usertype == 'user')
+          {
+              return view('dashboard');
+          }
+          else if ($usertype == 'admin')
+          {
+              return view('Admin.adminhome');
+          }
 
-            if($usertype == 'user')
-            {
-                return view('dashboard');
-            }
-            else if ($usertype == 'admin')
-            {
-                return view('Admin.adminhome');
-            }
+          {
+              return redirect('/login')->with('fail','You are not authorized to view this page');
+          }
+      }
 
-            {
-                return redirect('/login')->with('fail','You are not authorized to view this page');
-            }
+
 
     }
 }
